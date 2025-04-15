@@ -5,7 +5,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { IUser } from 'src/users/users.interface';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { RegisterUserDto, UserLoginDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto, RegisterUserDto, UserLoginDto } from 'src/users/dto/create-user.dto';
 import { Request, Response } from 'express';
 
 @ApiTags('auth')
@@ -24,6 +24,7 @@ export class AuthController {
   }
   @Public()
   @ResponseMessage("Register a new user")
+  @ApiBody({ type: CreateUserDto })
   @Post('/register')
   handleRegister(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto);
