@@ -8,15 +8,31 @@ import { ObjectsModule } from './objects/objects.module';
 import { ImagesModule } from './images/images.module';
 import { RecognitionResultsModule } from './recognition_results/recognition_results.module';
 import { EmergencyContactsModule } from './emergency_contacts/emergency_contacts.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [    MongooseModule.forRoot('mongodb+srv://vvm1004:test123@cluster0.4a2h5sc.mongodb.net/Cap2?retryWrites=true&w=majority&appName=Cluster'),
+  imports: [   
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+        connectionFactory: (connection) => {
+          return connection;
+        },
+      }),
+      inject: [ConfigService],
+    }),
     UsersModule,
     ContactsModule,
     ObjectsModule,
     ImagesModule,
     RecognitionResultsModule,
-    EmergencyContactsModule
+    EmergencyContactsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    AuthModule,
   ],
   
   controllers: [AppController],

@@ -2,6 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ObjectsService } from './objects.service';
 import { CreateObjectDto } from './dto/create-object.dto';
 import { UpdateObjectDto } from './dto/update-object.dto';
+import { ApiTags } from '@nestjs/swagger';
+
+
+@ApiTags('objects')
 
 @Controller('objects')
 export class ObjectsController {

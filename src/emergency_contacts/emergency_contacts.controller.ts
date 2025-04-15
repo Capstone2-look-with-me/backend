@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EmergencyContactsService } from './emergency_contacts.service';
 import { CreateEmergencyContactDto } from './dto/create-emergency_contact.dto';
 import { UpdateEmergencyContactDto } from './dto/update-emergency_contact.dto';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('emergency-contacts')
 
 @Controller('emergency-contacts')
 export class EmergencyContactsController {

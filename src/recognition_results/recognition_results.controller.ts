@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RecognitionResultsService } from './recognition_results.service';
 import { CreateRecognitionResultDto } from './dto/create-recognition_result.dto';
 import { UpdateRecognitionResultDto } from './dto/update-recognition_result.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('recognition-results')
 @Controller('recognition-results')
 export class RecognitionResultsController {
   constructor(private readonly recognitionResultsService: RecognitionResultsService) {}
