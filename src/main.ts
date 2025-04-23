@@ -10,6 +10,7 @@ import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
+import job from "./cron/cron";
 
 
 async function bootstrap() {
@@ -80,7 +81,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-
+  job.start();
   await app.listen(configService.get<string>('PORT'));
 }
 bootstrap();

@@ -38,6 +38,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
+    "cron": "^4.3.0",
     "helmet": "^8.1.0",
     "mongoose": "^8.12.1",
     "ms": "^2.1.3",
