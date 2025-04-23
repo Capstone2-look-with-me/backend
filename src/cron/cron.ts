@@ -1,9 +1,9 @@
-import cron from "cron";
+import { CronJob } from 'cron';
 import https from "https";
 
 const URL = "https://backend-p9rt.onrender.com/swagger";
 
-const job = new cron.CronJob("*/14 * * * *", function () {
+const job = new CronJob('*/14 * * * *', function () {
 	https
 		.get(URL, (res) => {
 			if (res.statusCode === 200) {
