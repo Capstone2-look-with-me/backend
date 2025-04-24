@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ObjectsService } from './objects.service';
-import { CreateObjectDto } from './dto/create-object.dto';
+import { CreateDetectedObjectDto } from './dto/create-object.dto';
 import { UpdateObjectDto } from './dto/update-object.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 
 
 @ApiTags('objects')
@@ -11,28 +12,50 @@ import { ApiTags } from '@nestjs/swagger';
 export class ObjectsController {
   constructor(private readonly objectsService: ObjectsService) {}
 
+  @ApiBody({ type: CreateDetectedObjectDto })
+  @ResponseMessage("Create a object")
   @Post()
-  create(@Body() createObjectDto: CreateObjectDto) {
-    return this.objectsService.create(createObjectDto);
+  async create(
+    @Body() createDetectedObjectDto: CreateDetectedObjectDto
+  ) {
+
+    let newObject = await this.objectsService.create(createDetectedObjectDto);
+    return {
+      _id: newObject?._id,
+      createdAt: newObject?.createdAt
+    }
   }
 
   @Get()
-  findAll() {
-    return this.objectsService.findAll();
+  @ResponseMessage('Fetch List Object with paginate')
+  @ApiQuery({ name: 'current', required: false, type: Number })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  findAll(
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
+    @Query() qs: string
+  ) {
+    return this.objectsService.findAll(+currentPage, +limit, qs);
   }
 
+  @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.objectsService.findOne(+id);
+  @ResponseMessage("Fetch Object by id")
+  async findOne(@Param('id') id: string) {
+    const foundContact = await this.objectsService.findOne(id)
+    return foundContact
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateObjectDto: UpdateObjectDto) {
-    return this.objectsService.update(+id, updateObjectDto);
+  @ResponseMessage("Update a Object")
+  @Patch()
+  update(@Body() updateObjectDto) {
+    return this.objectsService.update(updateObjectDto);
   }
 
+  @ResponseMessage("Delete a Object")
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.objectsService.remove(+id);
+    return this.objectsService.remove(id);
   }
+
 }

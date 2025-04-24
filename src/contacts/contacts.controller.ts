@@ -1,36 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 @ApiTags('contacts')
 
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
+  @ApiBody({ type: CreateContactDto })
+  @ResponseMessage("Create a contact")
   @Post()
-  create(@Body() createContactDto: CreateContactDto) {
-    return this.contactsService.create(createContactDto);
+  async create(
+    @Body() createContactDto: CreateContactDto
+  ) {
+
+    let newContact = await this.contactsService.create(createContactDto);
+    return {
+      _id: newContact?._id,
+      createdAt: newContact?.createdAt
+    }
   }
 
   @Get()
-  findAll() {
-    return this.contactsService.findAll();
+  @ApiQuery({ name: 'current', required: false, type: Number })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ResponseMessage('Fetch List Contact with paginate')
+  findAll(
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
+    @Query() qs: string
+  ) {
+    return this.contactsService.findAll(+currentPage, +limit, qs);
   }
 
+  @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contactsService.findOne(+id);
+  @ResponseMessage("Fetch contact by id")
+  async findOne(@Param('id') id: string) {
+    const foundContact = await this.contactsService.findOne(id)
+    return foundContact
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
-    return this.contactsService.update(+id, updateContactDto);
+  @ResponseMessage("Update a Contact")
+  @Patch()
+  update(@Body() updateContactDto) {
+    return this.contactsService.update(updateContactDto);
   }
 
+  @ResponseMessage("Delete a Contact")
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.contactsService.remove(+id);
+    return this.contactsService.remove(id);
   }
 }

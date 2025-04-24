@@ -1,20 +1,27 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
 
+export type EmergencyContactDocument = HydratedDocument<EmergencyContact>;
 
 @Schema({ timestamps: true })
-export class EmergencyContact extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+export class EmergencyContact {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user_id: Types.ObjectId;
 
-  @Prop({
-    type: { contact_id: { type: Types.ObjectId, ref: 'Contact' }, contact_name: String, phone_number: String },
-  })
-  contact: {
-    contact_id: Types.ObjectId;
-    contact_name: string;
-    phone_number: string;
-  };
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Contact', required: false, default: null })
+  contact_id?: Types.ObjectId | null;
+
+  @Prop({ required: false, default: null })
+  contact_name?: string;
+
+  @Prop({ required: false, default: null })
+  phone_number?: string;
+
+  @Prop()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt: Date;
 }
 
 export const EmergencyContactSchema = SchemaFactory.createForClass(EmergencyContact);

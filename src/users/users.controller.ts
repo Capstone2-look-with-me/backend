@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from './users.interface';
 @ApiTags('users')
@@ -27,6 +27,8 @@ export class UsersController {
 
   @Get()
   @ResponseMessage('Fetch List User with paginate')
+  @ApiQuery({ name: 'current', required: false, type: Number })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number })
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,
