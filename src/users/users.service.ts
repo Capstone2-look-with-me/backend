@@ -129,10 +129,7 @@ export class UsersService {
     return await this.userModel.updateOne({ _id }, { refreshToken });
   };
   findUserByToken = async (refreshToken: string) => {
-    return await this.userModel.findOne({ refreshToken }).populate({
-      path: 'role',
-      select: { name: 1 },
-    });
+    return await this.userModel.findOne({ refreshToken })
   };
   async findById(userId: string){
     const user = await this.userModel.findById(userId).exec();

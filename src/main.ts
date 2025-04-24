@@ -81,7 +81,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-  job.start();
+  // job.start();
   await app.listen(configService.get<string>('PORT'));
 }
 bootstrap();

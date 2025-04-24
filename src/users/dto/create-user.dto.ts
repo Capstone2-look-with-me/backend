@@ -49,13 +49,21 @@ export class CreateUserDto {
   })
   phone: string;
  
-  
- 
+
+   @ApiProperty({
+    example: 'https://dichvuxaydung.com.vn/upload/images/210452baoxaydung_image001%20(1)(1).jpg',
+    description: 'avatar',
+  })
+  avatar: string;
 }
 
 export class RegisterUserDto {
   @IsNotEmpty({
     message: 'Name không được để trống',
+  })
+  @ApiProperty({
+    example: 'ssss',
+    description: 'name',
   })
   name: string;
 
@@ -63,17 +71,30 @@ export class RegisterUserDto {
   @IsNotEmpty({
     message: 'Email không được để trống',
   })
+  @ApiProperty({
+    example: 'aaa@gmail.com',
+    description: 'email',
+  })
   email: string;
 
   @IsNotEmpty({
     message: 'Password không được để trống',
+  })
+  @ApiProperty({
+    example: '123456',
+    description: 'password',
   })
   password: string;
 
   @IsNotEmpty({
     message: 'Phone không được để trống',
   })
+  @ApiProperty({
+    example: '012332222',
+    description: 'password',
+  })
   phone: string;
+ 
 }
 
 export class UserLoginDto {

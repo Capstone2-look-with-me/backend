@@ -10,6 +10,7 @@ import { RecognitionResultsModule } from './recognition_results/recognition_resu
 import { EmergencyContactsModule } from './emergency_contacts/emergency_contacts.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [   
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     AuthModule,
+    FilesModule
   ],
   
   controllers: [AppController],
