@@ -38,6 +38,12 @@ export class ImagesController {
   }
 
   @Public()
+  @Get('user/:userId')
+  @ResponseMessage("Fetch image by user_id")
+  async findByUserId(@Param('userId') userId: string) {
+    return this.imagesService.findByUserId(userId);
+}
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch Image by id")
   async findOne(@Param('id') id: string) {

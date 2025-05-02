@@ -37,6 +37,12 @@ export class ContactsController {
   }
 
   @Public()
+  @Get('user/:userId')
+  @ResponseMessage("Fetch contacts by user_id")
+  async findByUserId(@Param('userId') userId: string) {
+    return this.contactsService.findByUserId(userId);
+}
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch contact by id")
   async findOne(@Param('id') id: string) {

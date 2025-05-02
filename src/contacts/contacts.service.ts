@@ -57,6 +57,13 @@ export class ContactsService {
         _id: id,
       })
   }
+  async findByUserId(userId: string) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new BadRequestException(`Invalid user_id: ${userId}`);
+    }
+  
+    return this.contactModel.find({ user_id: userId }).exec();
+  }
   async update(updateContactDto) {
     return await this.contactModel.updateOne(
       { _id: updateContactDto._id },

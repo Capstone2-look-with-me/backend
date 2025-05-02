@@ -65,6 +65,13 @@ export class ImagesService {
       },
     );
   }
+  async findByUserId(userId: string) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new BadRequestException(`Invalid user_id: ${userId}`);
+    }
+  
+    return this.imageModel.find({ user_id: userId }).exec();
+  }
 
   async remove(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {

@@ -1,26 +1,30 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
+
+export type RecognitionResultDocument = HydratedDocument<RecognitionResult>;
 
 @Schema({ timestamps: true })
-export class RecognitionResult extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'Image', required: true })
+export class RecognitionResult {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image', required: true })
   image_id: Types.ObjectId;
 
-  @Prop({
-    type: { object_id: { type: Types.ObjectId, ref: 'Object' }, confidence: Number },
-  })
-  detected_object: {
-    object_id: Types.ObjectId;
-    confidence: number;
-  };
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'DetectedObject', required: false })
+  detected_object_id?: Types.ObjectId;
 
-  @Prop({
-    type: { contact_id: { type: Types.ObjectId, ref: 'Contact' }, is_known: Boolean },
-  })
-  detected_person: {
-    contact_id: Types.ObjectId;
-    is_known: boolean;
-  };
+  @Prop({ type: Number, required: true })
+  confidence: number;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Contact', required: false })
+  detected_person_id?: Types.ObjectId;
+
+  @Prop({ type: Boolean, default: false }) 
+  is_known: boolean;
+
+  @Prop()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt: Date;
 }
 
 export const RecognitionResultSchema = SchemaFactory.createForClass(RecognitionResult);
