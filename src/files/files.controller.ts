@@ -37,6 +37,7 @@ export class FilesController {
   uploadFile(  @Headers('folder_type') folderType: string, @UploadedFile() file: Express.Multer.File) {
     return {
       url: `https://backend-p9rt.onrender.com/images/${folderType}/${file.filename}`,
+      urlLocal: `http://localhost:8000/images/${folderType}/${file.filename}`,
       fileName: file.filename
     }
   }
