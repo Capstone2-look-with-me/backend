@@ -3,14 +3,21 @@ import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ResponseMessage, SkipCheckPermission } from 'src/decorator/customize';
+import { ResponseMessage, SkipCheckPermission, User } from 'src/decorator/customize';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
+import { HttpService } from '@nestjs/axios'; 
+import { ConfigService } from '@nestjs/config';
+import { lastValueFrom } from 'rxjs';
 
 @ApiTags('files')
 @Controller('files')
 export class FilesController {
-  constructor(private readonly filesService: FilesService) { }
+  constructor(
+    private readonly filesService: FilesService,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) { }
 
   @Post('upload')
   @ResponseMessage("Upload file")
@@ -34,11 +41,13 @@ export class FilesController {
       },
     },
   })
-  uploadFile(  @Headers('folder_type') folderType: string, @UploadedFile() file: Express.Multer.File) {
+  async uploadFile(  @Headers('folder_type') folderType: string, @UploadedFile() file: Express.Multer.File) {
+    const host = this.configService.get<string>('HOST');
+    const fileUrl = `${host}/images/${folderType}/${file.filename}`;
+
     return {
-      url: `https://backend-p9rt.onrender.com/images/${folderType}/${file.filename}`,
-      urlLocal: `http://localhost:8000/images/${folderType}/${file.filename}`,
-      fileName: file.filename
+      url: fileUrl,
+      fileName: file.filename,
     }
   }
 

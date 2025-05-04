@@ -14,6 +14,12 @@ export class Contact {
   @Prop()
   avatar: string;
 
+  @Prop({
+    type: [Number],
+    required: false,
+  })
+  avatar_encoding: number[];
+
   @Prop()
   createdAt: Date;
 

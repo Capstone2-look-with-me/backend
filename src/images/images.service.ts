@@ -5,11 +5,20 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Image, ImageDocument } from './schemas/image.schema';
 import mongoose, { Model } from 'mongoose';
 import aqp from 'api-query-params';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { RecognitionResult, RecognitionResultDocument } from 'src/recognition_results/schemas/recognition_result.schema';
+import * as fs from 'fs';
+import * as path from 'path';
+import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ImagesService {
   constructor(
-    @InjectModel(Image.name) private imageModel: Model<ImageDocument>
+    @InjectModel(Image.name) private imageModel: Model<ImageDocument>,
+    @InjectModel(RecognitionResult.name) private recognitionResultModel: Model<RecognitionResultDocument>,  
+    private readonly configService: ConfigService,
+
   ) {}
   async create(createImageDto: CreateImageDto) {
     let newImage = await this.imageModel.create({
@@ -80,5 +89,43 @@ export class ImagesService {
     return this.imageModel.deleteOne({
       _id: id,
     });
+  }
+
+  // Cron job để kiểm tra ảnh không được sử dụng trong recognition_results sau 24 giờ
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async handleCron() {
+      console.log('Cron job is running...');
+    const images = await this.imageModel.find();
+    const host = this.configService.get<string>('HOST');
+    for (const image of images) {
+      const used = await this.recognitionResultModel.exists({ image_id: image._id });
+
+      if (!used) {
+        await this.imageModel.deleteOne({ _id: image._id });
+
+        // Lấy đường dẫn file
+        const localFilePath = path.join(__dirname, '..', '..', 'public', image.image_url.replace(`${host}/`, ''));
+        console.log(localFilePath)
+        // Xóa file
+        fs.unlink(localFilePath, (err) => {
+          if (err) {
+            console.error(`Error deleting file: ${localFilePath}`, err);
+          } else {
+            console.log(`Deleted unused image: ${localFilePath}`);
+          }
+        });
+      }
+    }
+  }
+
+   // Cron expression: Every 15 minutes
+   @Cron('*/15 * * * *')
+  async handleCronEvery() {
+    try {
+      const response = await axios.get('https://backend-p9rt.onrender.com/swagger');
+    } catch (error) {
+      console.error('API Request failed:', error.message);
+    }
   }
 }

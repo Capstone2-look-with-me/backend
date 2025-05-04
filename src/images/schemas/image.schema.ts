@@ -11,6 +11,12 @@ export class Image {
   @Prop({ required: true })
   image_url: string;
 
+  @Prop({
+    type: [Number],
+    required: false,
+  })
+  image_encoding: number[];
+
   @Prop()
   createdAt: Date;
 

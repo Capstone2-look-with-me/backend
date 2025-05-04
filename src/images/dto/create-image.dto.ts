@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateImageDto {
   @ApiProperty({
@@ -17,5 +17,15 @@ export class CreateImageDto {
   @IsString()
   @IsNotEmpty()
   image_url: string;
+
+  
+  @ApiProperty({
+    description: 'Image encoding là vector 128 số thực được sinh ra từ ảnh',
+    example: Array(128).fill(0).map((_, i) => parseFloat((Math.random() * 2 - 1).toFixed(5))),
+    type: [Number],
+  })
+  @IsArray()
+  @IsNumber({}, { each: true })
+  image_encoding: number[];
 }
 

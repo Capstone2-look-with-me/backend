@@ -3,6 +3,7 @@ import { FilesService } from './files.service';
 import { FilesController } from './files.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { MulterConfigService } from './multer.config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   controllers: [FilesController],
@@ -10,7 +11,8 @@ import { MulterConfigService } from './multer.config';
   imports: [
     MulterModule.registerAsync({
       useClass: MulterConfigService,
-    })
+    }),
+    HttpModule
   ]
 })
 export class FilesModule {}

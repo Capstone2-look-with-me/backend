@@ -11,6 +11,7 @@ import { EmergencyContactsModule } from './emergency_contacts/emergency_contacts
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [   
@@ -34,7 +35,8 @@ import { FilesModule } from './files/files.module';
       isGlobal: true,
     }),
     AuthModule,
-    FilesModule
+    FilesModule,
+    ScheduleModule.forRoot()
   ],
   
   controllers: [AppController],
