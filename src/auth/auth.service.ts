@@ -32,17 +32,15 @@ export class AuthService {
 
 
   async login(user: IUser, response: Response) {
-    const { _id, name, email, isDeleted } = user;
+    const { _id, name, email, avatar } = user;
 
-    if (isDeleted) {
-        throw new BadRequestException("User has been deleted or deactivated.");
-    }
     const payload = {
       sub: "token login",
       iss: "from server",
       _id,
       name,
-      email
+      email, 
+      avatar
     }
     const refresh_token = this.createRefreshToken(payload)
     //update user with refresh token
@@ -58,7 +56,8 @@ export class AuthService {
       user: {
         _id,
         name,
-        email
+        email, 
+        avatar
       }
 
     };

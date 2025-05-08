@@ -36,7 +36,7 @@ export class ContactsController {
     return this.contactsService.findAll(+currentPage, +limit, qs);
   }
 
-  @Public()
+  // @Public()
   @Get('user/:userId')
   @ResponseMessage("Fetch contacts by user_id")
   async findByUserId(@Param('userId') userId: string) {

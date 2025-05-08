@@ -37,7 +37,7 @@ export class UsersService {
   }
 
   async register(user: RegisterUserDto) {
-    const { name, email, password,phone } = user;
+    const { name, email, password,phone, avatar } = user;
     const hashPassword = this.getHashPassword(password);
     const isExist = await this.userModel.findOne({ email });
     if (isExist) {
@@ -48,7 +48,8 @@ export class UsersService {
       name,
       email,
       password: hashPassword,
-      phone
+      phone,
+      avatar
     });
     return newRegister;
   }

@@ -20,12 +20,20 @@ export class CreateImageDto {
 
   
   @ApiProperty({
-    description: 'Image encoding là vector 128 số thực được sinh ra từ ảnh',
-    example: Array(128).fill(0).map((_, i) => parseFloat((Math.random() * 2 - 1).toFixed(5))),
-    type: [Number],
+    description: 'Image encoding là danh sách các vector 128 số thực được sinh ra từ ảnh',
+    example: [
+      Array(128).fill(0).map(() => parseFloat((Math.random() * 2 - 1).toFixed(5)))
+    ],
+    type: 'array',
+    items: {
+      type: 'array',
+      items: { type: 'number' },
+    },
   })
   @IsArray()
+  @IsArray({ each: true })
   @IsNumber({}, { each: true })
-  image_encoding: number[];
+  image_encoding: number[][];
+  
 }
 

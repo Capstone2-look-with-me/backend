@@ -119,9 +119,9 @@ export class ImagesService {
     }
   }
 
-   // Cron expression: Every 15 minutes
-   @Cron('*/15 * * * *')
-  async handleCronEvery() {
+   // Cron expression: Every 3 minutes
+   @Cron('*/3 * * * *')
+   async handleCronEvery() {
     try {
       const response = await axios.get('https://backend-p9rt.onrender.com/swagger');
     } catch (error) {

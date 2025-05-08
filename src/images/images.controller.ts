@@ -37,7 +37,7 @@ export class ImagesController {
     return this.imagesService.findAll(+currentPage, +limit, qs);
   }
 
-  @Public()
+  // @Public()
   @Get('user/:userId')
   @ResponseMessage("Fetch image by user_id")
   async findByUserId(@Param('userId') userId: string) {

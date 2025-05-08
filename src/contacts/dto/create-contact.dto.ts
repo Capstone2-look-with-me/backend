@@ -19,20 +19,18 @@ export class CreateContactDto {
   name: string;
 
   @ApiProperty({
-    description: 'Link avatar (tuỳ chọn)',
-    example: 'https://example.com/avatar.jpg',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  avatar?: string;
-
-  @ApiProperty({
-    description: 'Avartar encoding là vector 128 số thực được sinh ra từ ảnh',
-    example: Array(128).fill(0).map((_, i) => parseFloat((Math.random() * 2 - 1).toFixed(5))),
-    type: [Number],
+    description: 'Avatar encoding là danh sách các vector 128 số thực được sinh ra từ ảnh',
+    example: [
+      Array(128).fill(0).map(() => parseFloat((Math.random() * 2 - 1).toFixed(5)))
+    ],
+    type: 'array',
+    items: {
+      type: 'array',
+      items: { type: 'number' },
+    },
   })
   @IsArray()
+  @IsArray({ each: true })
   @IsNumber({}, { each: true })
-  avatar_encoding: number[];
+  avatar_encoding: number[][];
 }

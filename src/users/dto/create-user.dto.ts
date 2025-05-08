@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsNotEmptyObject,
   IsObject,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -94,6 +95,13 @@ export class RegisterUserDto {
     description: 'password',
   })
   phone: string;
+
+  @ApiProperty({
+    example: 'https://dichvuxaydung.com.vn/upload/images/210452baoxaydung_image001%20(1)(1).jpg',
+    description: 'avatar',
+  })
+  @IsOptional()
+  avatar: string;
  
 }
 
