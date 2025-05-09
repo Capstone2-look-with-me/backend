@@ -37,6 +37,12 @@ export class EmergencyContactsController {
     return this.emergencyContactsService.findAll(+currentPage, +limit, qs);
   }
 
+  @Get('user/:userId')
+  @ResponseMessage("Fetch contacts by user_id")
+  async findByUserId(@Param('userId') userId: string) {
+    return this.emergencyContactsService.findByUserId(userId);
+}
+
   @Public()
   @Get(':id')
   @ResponseMessage("Fetch emergency contact by id")
@@ -44,6 +50,8 @@ export class EmergencyContactsController {
     const foundContact = await this.emergencyContactsService.findOne(id)
     return foundContact
   }
+
+
 
   @ResponseMessage("Update a emergency contact")
   @Patch()
