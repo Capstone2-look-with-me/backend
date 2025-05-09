@@ -82,4 +82,12 @@ export class RecognitionResultsService {
       _id: id,
     });
   }
+
+  async findByUserId(userId: string) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new BadRequestException(`Invalid user_id: ${userId}`);
+    }
+  
+    return this.recognitionResultModel.find({ user_id: userId }).exec();
+  }
 }

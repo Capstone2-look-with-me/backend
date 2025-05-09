@@ -35,6 +35,12 @@ export class RecognitionResultsController {
     return this.recognitionResultsService.findAll(+currentPage, +limit, qs);
   }
 
+  @Get('user/:userId')
+  @ResponseMessage("Fetch recognition result by user_id")
+  async findByUserId(@Param('userId') userId: string) {
+    return this.recognitionResultsService.findByUserId(userId);
+}
+
   @Public()
   @Get(':id')
   @ResponseMessage("Fetch Recognition Result by id")
