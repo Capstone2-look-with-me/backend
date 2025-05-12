@@ -29,6 +29,24 @@ export class UsersController {
   @ResponseMessage('Fetch List User with paginate')
   @ApiQuery({ name: 'current', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ApiQuery({
+    name: 'name',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'email',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'phone',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,

@@ -30,6 +30,19 @@ export class ObjectsController {
   @ResponseMessage('Fetch List Object with paginate')
   @ApiQuery({ name: 'current', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
+
+  @ApiQuery({
+    name: 'object_name',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,

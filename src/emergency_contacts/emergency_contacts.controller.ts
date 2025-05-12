@@ -28,6 +28,18 @@ export class EmergencyContactsController {
   @Get()
   @ApiQuery({ name: 'current', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ApiQuery({
+    name: 'contact_name',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'phone_number',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
   @ResponseMessage('Fetch List emergency contact with paginate')
   findAll(
     @Query("current") currentPage: string,

@@ -27,6 +27,12 @@ export class ContactsController {
   @Get()
   @ApiQuery({ name: 'current', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ApiQuery({
+    name: 'name',
+    required: false,
+    description: '(e.g: /ReactJs/i)',
+    type: String,
+  })
   @ResponseMessage('Fetch List Contact with paginate')
   findAll(
     @Query("current") currentPage: string,
