@@ -19,6 +19,13 @@ export class CreateContactDto {
   name: string;
 
   @ApiProperty({
+    example: 'https://dichvuxaydung.com.vn/upload/images/210452baoxaydung_image001%20(1)(1).jpg',
+    description: 'avatar',
+  })
+  @IsOptional()
+  avatar: string;
+
+  @ApiProperty({
     description: 'Avatar encoding là danh sách các vector 128 số thực được sinh ra từ ảnh',
     example: [
       Array(128).fill(0).map(() => parseFloat((Math.random() * 2 - 1).toFixed(5)))
