@@ -26,18 +26,19 @@ export class CreateContactDto {
   avatar: string;
 
   @ApiProperty({
-    description: 'Avatar encoding là danh sách các vector 128 số thực được sinh ra từ ảnh',
+    description: 'Mảng mã hóa avatar (2 chiều)',
+    type: 'number[][]',
     example: [
-      Array(128).fill(0).map(() => parseFloat((Math.random() * 2 - 1).toFixed(5)))
-    ],
-    type: 'array',
-    items: {
-      type: 'array',
-      items: { type: 'number' },
-    },
+      [
+        -0.16458487510681152,
+        0.07462839782238007,
+        0.035795342177152634,
+        -0.09185375273227692,
+        -0.11347272992134094
+      ]
+    ]
   })
   @IsArray()
-  @IsArray({ each: true })
-  @IsNumber({}, { each: true })
+  @IsOptional()
   avatar_encoding: number[][];
 }

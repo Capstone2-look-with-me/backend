@@ -14,7 +14,7 @@ export class Contact {
   @Prop()
   avatar: string;
 
-  @Prop({ type: [[Number]], required: false }) // Mảng các vector 128 số thực
+  @Prop({ required: false }) // Mảng các vector 128 số thực
   avatar_encoding: number[][];
 
   @Prop()

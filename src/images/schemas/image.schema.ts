@@ -11,7 +11,7 @@ export class Image {
   @Prop({ required: true })
   image_url: string;
 
-  @Prop({ type: [[Number]], required: false }) // Mảng các vector 128 số thực
+  @Prop({ required: false }) // Mảng các vector 128 số thực
   image_encoding: number[][];
 
   @Prop()
