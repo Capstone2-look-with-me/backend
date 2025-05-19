@@ -36,7 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     }),
     AuthModule,
     FilesModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
   
   controllers: [AppController],

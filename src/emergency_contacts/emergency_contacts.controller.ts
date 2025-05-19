@@ -34,11 +34,17 @@ export class EmergencyContactsController {
     description: '(e.g: /ReactJs/i)',
     type: String,
   })
+
   @ApiQuery({
     name: 'phone_number',
     required: false,
     description: '(e.g: /ReactJs/i)',
     type: String,
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    description: 'Sắp xếp danh sách theo tên biến. Sử dụng `+name` để sắp xếp tăng dần, `-name` để sắp xếp giảm dần.',
   })
   @ResponseMessage('Fetch List emergency contact with paginate')
   findAll(

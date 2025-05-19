@@ -30,6 +30,11 @@ export class ObjectsController {
   @ResponseMessage('Fetch List Object with paginate')
   @ApiQuery({ name: 'current', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    description: 'Sắp xếp danh sách theo tên biến. Sử dụng `+name` để sắp xếp tăng dần, `-name` để sắp xếp giảm dần.',
+  })
 
   @ApiQuery({
     name: 'object_name',

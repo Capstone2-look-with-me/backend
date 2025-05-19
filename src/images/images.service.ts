@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-
+import { v2 as cloudinary } from 'cloudinary'; 
 @Injectable()
 export class ImagesService {
   constructor(
@@ -94,31 +94,65 @@ export class ImagesService {
   // Cron job để kiểm tra ảnh không được sử dụng trong recognition_results sau 24 giờ
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  // @Cron('*/10 * * * * *')
+
   async handleCron() {
-      console.log('Cron job is running...');
+    console.log('Cron job is running...');
     const images = await this.imageModel.find();
     const host = this.configService.get<string>('HOST');
+  
     for (const image of images) {
       const used = await this.recognitionResultModel.exists({ image_id: image._id });
-
+  
       if (!used) {
         await this.imageModel.deleteOne({ _id: image._id });
-
-        // Lấy đường dẫn file
-        const localFilePath = path.join(__dirname, '..', '..', 'public', image.image_url.replace(`${host}/`, ''));
-        console.log(localFilePath)
-        // Xóa file
-        fs.unlink(localFilePath, (err) => {
-          if (err) {
-            console.error(`Error deleting file: ${localFilePath}`, err);
-          } else {
-            console.log(`Deleted unused image: ${localFilePath}`);
+  
+        const imageUrl = image.image_url;
+  
+        if (imageUrl.includes('res.cloudinary.com')) {
+          const publicId = this.extractCloudinaryPublicId(imageUrl);
+          if (publicId) {
+            try {
+              await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+              console.log(`Deleted Cloudinary image: ${publicId}`);
+            } catch (err) {
+              console.error(`Error deleting Cloudinary image: ${publicId}`, err);
+            }
           }
-        });
+        } else {
+          const localFilePath = path.join(__dirname, '..', '..', 'public', imageUrl.replace(`${host}/`, ''));
+          fs.unlink(localFilePath, (err) => {
+            if (err) {
+              console.error(`Error deleting file: ${localFilePath}`, err);
+            } else {
+              console.log(`Deleted unused image: ${localFilePath}`);
+            }
+          });
+        }
       }
     }
   }
 
+  private extractCloudinaryPublicId(url: string): string {
+    try {
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname; // /your_cloud/image/upload/vXXXX/Cap2/filename.jpg
+      const parts = pathname.split('/');
+      const uploadIndex = parts.findIndex(part => part === 'upload');
+  
+      // Skip version (v1747651088), get everything after it
+      const publicIdParts = parts.slice(uploadIndex + 2); // Skip "upload" and "vXXXX"
+      const publicIdWithExt = publicIdParts.join('/');
+      const publicId = publicIdWithExt.replace(/\.[^/.]+$/, ''); // Remove extension
+  
+      return publicId;
+    } catch (e) {
+      console.error('Failed to extract publicId from URL', url);
+      return null;
+    }
+  }
+  
+  
    // Cron expression: Every 3 minutes
    @Cron('*/3 * * * *')
    async handleCronEvery() {
