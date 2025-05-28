@@ -8,7 +8,7 @@ import { Public, ResponseMessage } from 'src/decorator/customize';
 @ApiTags('recognition-results')
 @Controller('recognition-results')
 export class RecognitionResultsController {
-  constructor(private readonly recognitionResultsService: RecognitionResultsService) {}
+  constructor(private readonly recognitionResultsService: RecognitionResultsService) { }
   @ApiBody({ type: CreateRecognitionResultDto })
   @ResponseMessage("Create a recognition result")
   @Post()
@@ -40,12 +40,26 @@ export class RecognitionResultsController {
     return this.recognitionResultsService.findAll(+currentPage, +limit, qs);
   }
 
-  @Get('user/:userId')
-  @ResponseMessage("Fetch recognition result by user_id")
-  async findByUserId(@Param('userId') userId: string) {
-    return this.recognitionResultsService.findByUserId(userId);
-}
+  @Get('image/:imageId')
+  @ResponseMessage("Fetch recognition result by image_id")
+  async findByImageId(@Param('imageId') imageId: string) {
+    return this.recognitionResultsService.findByImageId(imageId);
+  }
 
+  
+  @Get('detected_object/:detectedObjecId')
+  @ResponseMessage("Fetch recognition result by detected_object_id")
+  async findByDetectedObjectId(@Param('detectedObjecId') detectedObjecId: string) {
+    return this.recognitionResultsService.findByDetectedObjectId(detectedObjecId);
+  }
+
+  @Get('detected_person/:detectedPersonId')
+  @ResponseMessage("Fetch recognition result by detected_person_id")
+  async findByDetectedPersonId(@Param('detectedPersonId') detectedPersonId: string) {
+    return this.recognitionResultsService.findByDetectedPersonId(detectedPersonId);
+  }
+
+  
   @Public()
   @Get(':id')
   @ResponseMessage("Fetch Recognition Result by id")

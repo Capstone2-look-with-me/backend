@@ -83,11 +83,27 @@ export class RecognitionResultsService {
     });
   }
 
-  async findByUserId(userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new BadRequestException(`Invalid user_id: ${userId}`);
+  async findByImageId(imageId: string) {
+    if (!mongoose.Types.ObjectId.isValid(imageId)) {
+      throw new BadRequestException(`Invalid image_id: ${imageId}`);
     }
   
-    return this.recognitionResultModel.find({ user_id: userId }).exec();
+    return this.recognitionResultModel.find({ image_id: imageId }).exec();
+  }
+
+  async findByDetectedObjectId(detectedObjecId: string) {
+    if (!mongoose.Types.ObjectId.isValid(detectedObjecId)) {
+      throw new BadRequestException(`Invalid detected_object_id: ${detectedObjecId}`);
+    }
+  
+    return this.recognitionResultModel.find({ detected_object_id: detectedObjecId }).exec();
+  }
+
+  async findByDetectedPersonId(detectedPersonId: string) {
+    if (!mongoose.Types.ObjectId.isValid(detectedPersonId)) {
+      throw new BadRequestException(`Invalid detected_person_id: ${detectedPersonId}`);
+    }
+  
+    return this.recognitionResultModel.find({ detected_person_id: detectedPersonId }).exec();
   }
 }

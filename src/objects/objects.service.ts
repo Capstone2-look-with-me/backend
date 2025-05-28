@@ -75,11 +75,11 @@ export class ObjectsService {
     });
   }
 
-  async findByUserId(userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new BadRequestException(`Invalid user_id: ${userId}`);
-    }
+  // async findByUserId(userId: string) {
+  //   if (!mongoose.Types.ObjectId.isValid(userId)) {
+  //     throw new BadRequestException(`Invalid user_id: ${userId}`);
+  //   }
   
-    return this.detectedObjectModel.find({ user_id: userId }).exec();
-  }
+  //   return this.detectedObjectModel.find({ user_id: userId }).exec();
+  // }
 }

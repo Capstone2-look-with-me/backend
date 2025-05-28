@@ -56,11 +56,11 @@ export class ObjectsController {
     return this.objectsService.findAll(+currentPage, +limit, qs);
   }
 
-  @Get('user/:userId')
-  @ResponseMessage("Fetch object by user_id")
-  async findByUserId(@Param('userId') userId: string) {
-    return this.objectsService.findByUserId(userId);
-}
+//   @Get('user/:userId')
+//   @ResponseMessage("Fetch object by user_id")
+//   async findByUserId(@Param('userId') userId: string) {
+//     return this.objectsService.findByUserId(userId);
+// }
 
   @Public()
   @Get(':id')

@@ -61,6 +61,12 @@ export class EmergencyContactsController {
     return this.emergencyContactsService.findByUserId(userId);
 }
 
+@Get('contact/:contactId')
+@ResponseMessage("Fetch emergency contact by contact_id")
+async findByContactId(@Param('contactId') contactId: string) {
+  return this.emergencyContactsService.findByContactId(contactId);
+}
+
   @Public()
   @Get(':id')
   @ResponseMessage("Fetch emergency contact by id")

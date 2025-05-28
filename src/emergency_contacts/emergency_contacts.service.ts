@@ -65,6 +65,14 @@ export class EmergencyContactsService {
   
     return this.emergencyContactModel.find({ user_id: userId }).exec();
   }
+
+  async findByContactId(contactId: string) {
+    if (!mongoose.Types.ObjectId.isValid(contactId)) {
+      throw new BadRequestException(`Invalid contact_id: ${contactId}`);
+    }
+  
+    return this.emergencyContactModel.find({ contact_id: contactId }).exec();
+  }
   async update(updateEmergencyContactDto) {
     return await this.emergencyContactModel.updateOne(
       { _id: updateEmergencyContactDto._id },
