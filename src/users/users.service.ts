@@ -7,11 +7,15 @@ import mongoose, { Model } from 'mongoose';
 import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { IUser } from './users.interface';
 import aqp from 'api-query-params';
+import { RedisService } from 'src/redis/redis.service';
+
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly redisService: RedisService
+
   ) {}
 
   getHashPassword = (password: string) => {
@@ -84,15 +88,32 @@ export class UsersService {
     };
   }
   async findOne(id: string) {
-    if (!mongoose.Types.ObjectId.isValid(id))
-      throw new BadRequestException( `Not found user with id ${id}`);
-    return this.userModel
-      .findOne({
-        _id: id,
-      })
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException(`Not found user with id ${id}`);
+    }
+  
+    const cacheKey = `user:${id}`;
+  
+    const cached = await this.redisService.get(cacheKey);
+    if (cached) {
+      console.log('✅ User from cache');
+      return JSON.parse(cached);
+    }
+  
+    const user = await this.userModel
+      .findOne({ _id: id })
       .select('-password')
+      .lean(); // Dùng lean() để trả object thuần JSON (nhẹ và dễ stringify hơn)
+  
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+  
+    await this.redisService.set(cacheKey, JSON.stringify(user), 86400); // TTL 1 ngày
+  
+    return user;
   }
-
+  
   findOneByUsername(username: string) {
     return this.userModel
       .findOne({

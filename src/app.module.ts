@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -12,9 +12,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CacheModule } from '@nestjs/cache-manager';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
-  imports: [   
+  imports: [
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -25,6 +27,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       }),
       inject: [ConfigService],
     }),
+
+    RedisModule,
     UsersModule,
     ContactsModule,
     ObjectsModule,
@@ -38,8 +42,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     FilesModule,
     ScheduleModule.forRoot(),
   ],
-  
+
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

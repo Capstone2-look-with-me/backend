@@ -25,3 +25,6 @@ export class EmergencyContact {
 }
 
 export const EmergencyContactSchema = SchemaFactory.createForClass(EmergencyContact);
+
+EmergencyContactSchema.index({ user_id: 1 });    
+EmergencyContactSchema.index({ contact_id: 1 });  

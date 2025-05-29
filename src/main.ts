@@ -11,6 +11,7 @@ import helmet from 'helmet'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
 import job from "./cron/cron";
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 
 async function bootstrap() {

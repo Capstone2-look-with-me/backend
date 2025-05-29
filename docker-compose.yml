@@ -5,11 +5,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - PORT=8080
-      - NODE_ENV=production
-      - MONGODB_URL=mongodb+srv://vvm1004:test123@cluster0.4a2h5sc.mongodb.net/Cap2?retryWrites=true&w=majority&appName=Cluster
+    env_file:
+      - .env
     expose:
-      - 8080
+      - 8081
     ports:
-      - 8080:8080
+      - 8081:8081
+    restart: unless-stopped
+    depends_on:
+      - redis  
+
+  redis:
+    image: redis:7-alpine  
+    container_name: redis
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

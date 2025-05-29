@@ -12,12 +12,15 @@ import * as path from 'path';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary'; 
+import { RedisService } from 'src/redis/redis.service';
 @Injectable()
 export class ImagesService {
   constructor(
     @InjectModel(Image.name) private imageModel: Model<ImageDocument>,
     @InjectModel(RecognitionResult.name) private recognitionResultModel: Model<RecognitionResultDocument>,  
     private readonly configService: ConfigService,
+    private readonly redisService: RedisService
+
 
   ) {}
   async create(createImageDto: CreateImageDto) {
@@ -79,7 +82,18 @@ export class ImagesService {
       throw new BadRequestException(`Invalid user_id: ${userId}`);
     }
   
-    return this.imageModel.find({ user_id: userId }).exec();
+    const cacheKey = `images:${userId}`;
+    let cached = await this.redisService.get(cacheKey);
+  
+    if (cached) {
+      return JSON.parse(cached); 
+    }
+  
+    const images = await this.imageModel.find({ user_id: userId });
+    
+    await this.redisService.set(cacheKey, JSON.stringify(images), 3600);
+  
+    return images;
   }
 
   async remove(id: string) {

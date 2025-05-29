@@ -1,16 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Inject } from '@nestjs/common';
 import { ObjectsService } from './objects.service';
 import { CreateDetectedObjectDto } from './dto/create-object.dto';
 import { UpdateObjectDto } from './dto/update-object.dto';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public, ResponseMessage } from 'src/decorator/customize';
-
+import type { Cache } from 'cache-manager'; 
+import { RedisService } from 'src/redis/redis.service';
 
 @ApiTags('objects')
 
 @Controller('objects')
 export class ObjectsController {
-  constructor(private readonly objectsService: ObjectsService) {}
+  constructor(
+    private readonly objectsService: ObjectsService,
+    // @Inject('CACHE_MANAGER') private cacheManager: Cache
+    // private readonly redisService: RedisService
+  ) {}
 
   @ApiBody({ type: CreateDetectedObjectDto })
   @ResponseMessage("Create a object")
@@ -61,7 +66,19 @@ export class ObjectsController {
 //   async findByUserId(@Param('userId') userId: string) {
 //     return this.objectsService.findByUserId(userId);
 // }
+// @Public()
+// @Get('set')
+// async setCache() {
+//   await this.redisService.set ('hello', 'world'); // TTL 60s
+//   return '✅ Saved to Redis!';
+// }
 
+// @Public()
+// @Get('get')
+// async getCache() {
+//   const value = await this.redisService.get('hello');
+//   return value ? `🌍 Value: ${value}` : '❌ Key not found';
+// }
   @Public()
   @Get(':id')
   @ResponseMessage("Fetch Object by id")

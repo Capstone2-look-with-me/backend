@@ -22,3 +22,6 @@ export class Image {
 }
 
 export const ImageSchema = SchemaFactory.createForClass(Image);
+
+ImageSchema.index({ user_id: 1 });  // Lấy ảnh theo user
+ImageSchema.index({ createdAt: -1 }); // Sắp xếp ảnh gần nhất (nếu có)

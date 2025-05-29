@@ -25,3 +25,7 @@ export class Contact {
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
+
+ContactSchema.index({ user_id: 1 }); 
+ContactSchema.index({ name: 1 });    
+
