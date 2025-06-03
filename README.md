@@ -21,8 +21,8 @@
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/look-with-me-backend.git
-cd look-with-me-backend
+git clone https://github.com/Capstone2-look-with-me/backend.git
+cd backend
 ```
 
 ### 2. Install dependencies
