@@ -1,38 +1,41 @@
-📦 Look With Me - Backend (NestJS)
-Backend service for Look With Me - a platform with authentication, cloud media upload, Redis caching, and email features.
 
-🚀 Tech Stack
-NestJS (Node.js framework)
+# 📦 Look With Me - Backend (NestJS)
 
-MongoDB (via Mongoose)
+> Backend service for Look With Me - a platform with authentication, cloud media upload, Redis caching, and email features.
 
-Redis (via Redis Cloud)
+---
 
-JWT for Authentication
+## 🚀 Tech Stack
 
-Cloudinary for Image Upload
+- **NestJS** (Node.js framework)
+- **MongoDB** (via Mongoose)
+- **Redis** (via Redis Cloud)
+- **JWT** for Authentication
+- **Cloudinary** for Image Upload
+- **Nodemailer (Gmail SMTP)** for Email Services
 
-Nodemailer (Gmail SMTP) for Email Services
+---
 
-📁 Project Setup
-1. Clone the repo
-bash
-Copy
-Edit
-git clone https://github.com/Capstone2-look-with-me/backend.git
-cd backend
-2. Install dependencies
-bash
-Copy
-Edit
+## 📁 Project Setup
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/look-with-me-backend.git
+cd look-with-me-backend
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
-3. Create .env file
-Tạo file .env trong thư mục gốc với nội dung như sau:
+```
 
-<details> <summary>📄 Click to view example <code>.env</code> file</summary>
-env
-Copy
-Edit
+### 3. Create `.env` file
+
+Tạo file `.env` trong thư mục gốc với nội dung như sau:
+
+```env
 PORT=8001
 MONGODB_URL='your_mongodb_url'
 
@@ -67,20 +70,30 @@ REDIS_HOST=your_redis_host
 REDIS_PORT=your_redis_port
 REDIS_USERNAME=your_redis_username
 REDIS_PASSWORD=your_redis_password
-</details>
-⚠️ Lưu ý: Không commit file .env lên GitHub!
+```
 
-4. Run the app
-bash
-Copy
-Edit
+
+---
+
+### 4. Run the app
+
+```bash
 npm run start:dev
-🛠 Available Scripts
-Command	Description
-npm run start:dev	Run in development mode (with hot reload)
-npm run build	Build the project
-npm run start:prod	Run built app in production mode
-npm run test	Run unit tests
+```
 
-📬 Contact
-Created by @vovanminhv23
+---
+
+## 🛠 Available Scripts
+
+| Command | Description |
+|--------|-------------|
+| `npm run start:dev` | Run in development mode (with hot reload) |
+| `npm run build` | Build the project |
+| `npm run start:prod` | Run built app in production mode |
+| `npm run test` | Run unit tests |
+
+---
+
+## 📬 Contact
+
+Created by [@vovanminhv23](mailto:vovanminhv23@gmail.com)
